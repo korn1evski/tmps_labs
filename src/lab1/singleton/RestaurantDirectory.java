@@ -9,9 +9,11 @@ import java.util.List;
 public class RestaurantDirectory {
 
     private List<Restaurant> restaurantList;
+    private Cache cache;
 
     private RestaurantDirectory() {
         restaurantList = new ArrayList<>();
+        cache = Cache.getInstance();
     }
 
     private static class SingletonHelper {
@@ -25,6 +27,7 @@ public class RestaurantDirectory {
     public synchronized void addRestaurant(Restaurant restaurant) {
         if (restaurant != null) {
             restaurantList.add(restaurant);
+            cache.put(restaurant.getName(), restaurant.toString());
             System.out.println("Restaurant added: " + restaurant.getName());
         } else {
             System.out.println("Cannot add a null restaurant.");
@@ -34,6 +37,7 @@ public class RestaurantDirectory {
     public synchronized boolean removeRestaurant(Restaurant restaurant) {
         if (restaurant != null && restaurantList.contains(restaurant)) {
             restaurantList.remove(restaurant);
+            cache.remove(restaurant.getName());
             System.out.println("Restaurant removed: " + restaurant.getName());
             return true;
         } else {
@@ -47,8 +51,13 @@ public class RestaurantDirectory {
     }
 
     public Restaurant findRestaurantByName(String name) {
+        if (cache.containsKey(name)) {
+            System.out.println("Retrieved from cache: " + name);
+            return new Restaurant(name);
+        }
         for (Restaurant restaurant : restaurantList) {
             if (restaurant.getName().equalsIgnoreCase(name)) {
+                cache.put(name, restaurant.toString());
                 return restaurant;
             }
         }
