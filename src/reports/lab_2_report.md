@@ -68,6 +68,7 @@ public class CustomerDecorator {
 I used the Facade Pattern to make interaction with the system easier by using the OrderingFacade class. This facade offers a unified interface to a set of interacting objects, like RestaurantDirectory, MealFactory, and OrderBuilder; it abstracts away complexities that the user does not need to know about for ordering from restaurants.
 
 Code Snippet:
+
 As you can see from this snippet, with implemented facade, the process for creating customer and working with cache now become only a one method, the fact that significantly makes easier the whole process of interacting with the system for the Client
 ```java
    public Customer getOrCreateCustomer(String firstName, String lastName) {
