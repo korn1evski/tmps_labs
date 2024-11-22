@@ -1,4 +1,4 @@
-package lab1.singleton;
+package lab1.singleton_flyweight;
 
 import lab1.domain.models.Restaurant;
 
